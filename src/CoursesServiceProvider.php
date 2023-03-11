@@ -7,18 +7,17 @@ use Astrogoat\Courses\Http\Livewire\Models\Courses\Index;
 use Astrogoat\Courses\Models\Course;
 use Astrogoat\Courses\Models\Participant;
 use Astrogoat\Courses\Providers\EventServiceProvider;
+use Astrogoat\Courses\Settings\CoursesSettings;
 use Helix\Fabrick\Icon;
 use Helix\Lego\Apps\App;
 use Helix\Lego\LegoManager;
 use Helix\Lego\Menus\Lego\Group;
 use Helix\Lego\Menus\Lego\Link;
 use Helix\Lego\Menus\Menu;
-use Helix\Lego\Models\User;
 use Laravel\Cashier\Cashier;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Astrogoat\Courses\Settings\CoursesSettings;
 
 class CoursesServiceProvider extends PackageServiceProvider
 {
@@ -36,7 +35,8 @@ class CoursesServiceProvider extends PackageServiceProvider
                 Participant::class,
             ])
             ->menu(function (Menu $menu) {
-                $menu->addToSection(Menu::MAIN_SECTIONS['PRIMARY'],
+                $menu->addToSection(
+                    Menu::MAIN_SECTIONS['PRIMARY'],
                     Group::add(
                         'Courses',
                         [

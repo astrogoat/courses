@@ -29,9 +29,8 @@ class Form extends Component
 
     public function getProducts()
     {
-
         dd(Cashier::stripe()->products->all(), Cashier::stripe()->prices->search([
-            'query' => 'product:\'prod_NTjeovlPoA6b52\''
+            'query' => 'product:\'prod_NTjeovlPoA6b52\'',
         ]));
         dd(Cashier::stripe()->products->all());
     }
