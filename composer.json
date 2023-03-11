@@ -1,21 +1,25 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "astrogoat/courses",
+    "description": "A Courses app for Strata",
     "keywords": [
-        ":vendor_name",
+        "astrogoat",
         "laravel",
-        ":package_slug"
+        "courses"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/astrogoat/courses",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Kristoffer Tonning",
+            "email": "github@tonning.dev",
             "role": "Developer"
         }
     ],
     "repositories": [
+        {
+            "type": "path",
+            "url": "/users/Tonning/Code/packages/astrogoat/strata"
+        },
         {
             "type": "composer",
             "url": "https://packages.hlx.dev"
@@ -23,9 +27,9 @@
     ],
     "require": {
         "php": "^8.0",
-        "astrogoat/strata": "^0.2.7",
+        "astrogoat/strata": "dev-main as 0.2.7",
         "spatie/laravel-package-tools": "^1.4.3",
-        "illuminate/contracts": "^8.37 || ^9.9"
+        "illuminate/contracts": "^8.37 || ^9.9 || ^10.0"
     },
     "require-dev": {
         "nunomaduro/collision": "^5.3",
@@ -37,13 +41,13 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories"
+            "Astrogoat\\Courses\\": "src",
+            "Astrogoat\\Courses\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "Astrogoat\\Courses\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -51,15 +55,18 @@
         "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "Astrogoat\\Courses\\CoursesServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\SkeletonFacade"
+                "Courses": "Astrogoat\\Courses\\CoursesFacade"
             }
         }
     },
