@@ -27,6 +27,7 @@ class Form extends \Helix\Lego\Http\Livewire\Models\Form
             'model.registration_service.link' => ['nullable'],
         ];
     }
+
     public function model(): string
     {
         return Course::class;

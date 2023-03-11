@@ -2,9 +2,9 @@
 
 namespace Astrogoat\Courses\Settings;
 
+use Astrogoat\Courses\Actions\CoursesAction;
 use Helix\Lego\Settings\AppSettings;
 use Illuminate\Validation\Rule;
-use Astrogoat\Courses\Actions\CoursesAction;
 
 class CoursesSettings extends AppSettings
 {
