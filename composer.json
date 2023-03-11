@@ -26,10 +26,10 @@
         }
     ],
     "require": {
-        "astrogoat/strata": "dev-main as 0.2.7",
-        "spatie/laravel-package-tools": "^1.4.3",
-        "illuminate/contracts": "^8.37 || ^9.9 || ^10.0"
         "php": "^8.1",
+        "astrogoat/strata": "dev-feature/STR-55/quill-editor as 0.2.7",
+        "illuminate/contracts": "^8.37 || ^9.9 || ^10.0",
+        "spatie/laravel-package-tools": "^1.4.3"
     },
     "require-dev": {
         "nunomaduro/collision": "^5.3",
