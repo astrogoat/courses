@@ -178,11 +178,17 @@ class Course extends Model implements Indexable, Publishable, Sectionable, Media
         };
     }
 
+    public function getRegistrationService(): RegistrationService
+    {
+        return app(RegistrationServiceManager::class)
+            ->driver($this->registration_service['provider'] ?? 'null')
+            ->setCourse($this)
+            ->setService($this->registration_service ?? []);
+    }
+
     public function signUpLink(): LinkValueObject
     {
-        $service = app(RegistrationServiceManager::class)
-            ->driver($this->registration_service['provider'] ?? 'null')
-            ->setService($this->registration_service ?? []);
+        $service = $this->getRegistrationService();
 
         return new LinkValueObject([
             'href' => $service->redirectUrl(),

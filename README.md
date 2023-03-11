@@ -13,6 +13,15 @@ You can install the package via composer:
 composer require astrogoat/courses
 ```
 
+## Installation
+You should configure your Stripe API keys in your application's .env file. You can retrieve your Stripe API keys from the Stripe control panel:
+```dotenv
+STRIPE_KEY=your-stripe-key
+STRIPE_SECRET=your-stripe-secret
+STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
+```
+
+
 ## Usage
 
 ```php

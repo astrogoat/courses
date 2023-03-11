@@ -29,9 +29,4 @@ class CoursesController extends Controller
             'layout' => $request->input('layout'),
         ]);
     }
-
-    public function update(Request $request, $stripeCheckoutSessionId)
-    {
-        return $stripeCheckoutSessionId;
-    }
 }

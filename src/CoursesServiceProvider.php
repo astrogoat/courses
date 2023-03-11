@@ -6,12 +6,15 @@ use Astrogoat\Courses\Http\Livewire\Models\Courses\Form;
 use Astrogoat\Courses\Http\Livewire\Models\Courses\Index;
 use Astrogoat\Courses\Models\Course;
 use Astrogoat\Courses\Models\Participant;
+use Astrogoat\Courses\Providers\EventServiceProvider;
 use Helix\Fabrick\Icon;
 use Helix\Lego\Apps\App;
 use Helix\Lego\LegoManager;
 use Helix\Lego\Menus\Lego\Group;
 use Helix\Lego\Menus\Lego\Link;
 use Helix\Lego\Menus\Menu;
+use Helix\Lego\Models\User;
+use Laravel\Cashier\Cashier;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -50,6 +53,9 @@ class CoursesServiceProvider extends PackageServiceProvider
 
     public function registeringPackage()
     {
+        $this->app->register(EventServiceProvider::class);
+        Cashier::ignoreMigrations();
+
         $this->callAfterResolving('lego', function (LegoManager $lego) {
             $lego->registerApp(fn (App $app) => $this->registerApp($app));
         });
@@ -59,6 +65,7 @@ class CoursesServiceProvider extends PackageServiceProvider
     {
         Livewire::component('astrogoat.courses.http.livewire.models.courses.index', Index::class);
         Livewire::component('astrogoat.courses.http.livewire.models.courses.form', Form::class);
+        Livewire::component('astrogoat.courses.http.livewire.registrations-services.stripe-checkout.form', \Astrogoat\Courses\Http\Livewire\RegistrationServices\StripeCheckout\Courses\Form::class);
     }
 
     public function configurePackage(Package $package): void

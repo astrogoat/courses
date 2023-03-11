@@ -16,6 +16,11 @@ class RegistrationServiceManager extends Manager
         return new StripePaymentLinkDriver();
     }
 
+    public function createStripeCheckoutDriver(): StripeCheckoutDriver
+    {
+        return new StripeCheckoutDriver();
+    }
+
     public function createNullDriver(): NullDriver
     {
         return new NullDriver();

@@ -14,6 +14,10 @@ class Form extends \Helix\Lego\Http\Livewire\Models\Form
 
     public string $signUpProvider = 'default';
 
+    protected $listeners = [
+        'updateRegistrationService',
+    ];
+
     public function rules(): array
     {
         return [
@@ -23,10 +27,13 @@ class Form extends \Helix\Lego\Http\Livewire\Models\Form
             'model.is_open_for_registration' => ['boolean'],
 //            'model.meta.description' => ['nullable'],
             'model.slug' => [new SlugRule($this->model)],
-            'model.registration_service.provider' => ['required'],
-            'model.registration_service.link' => ['nullable'],
+            'model.registration_service' => ['required'],
+//            'model.registration_service.provider' => ['required'],
+//            'model.registration_service.link' => ['nullable'],
+//            'model.registration_service.price_id' => ['nullable'],
         ];
     }
+
     public function model(): string
     {
         return Course::class;
@@ -70,7 +77,21 @@ class Form extends \Helix\Lego\Http\Livewire\Models\Form
     {
         return [
             'custom' => 'Custom',
+            'stripe-checkout' => 'Stripe Checkout',
             'stripe-payment-link' => 'Stripe Payment Link',
         ];
+    }
+
+    public function updateRegistrationService($payload)
+    {
+        $registrationService = $this->model->registration_service;
+
+        foreach ($payload as $key => $value) {
+            data_set($registrationService, $key, $value);
+        }
+
+        $this->model['registration_service'] = $registrationService;
+
+        $this->markAsDirty();
     }
 }

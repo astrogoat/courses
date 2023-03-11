@@ -133,12 +133,9 @@
                     @endforeach
                 </x-fab::forms.select>
 
-                @if(($this->model->registration_service['provider'] ?? '') == 'stripe-payment-link')
-                    <x-fab::forms.input
-                        label="Stripe Payment Link"
-                        wire:model="model.registration_service.link"
-                    />
-                @endif
+                <livewire:astrogoat.courses.http.livewire.registrations-services.stripe-checkout.form
+                    :course="$this->model"
+                />
             </x-fab::layouts.panel>
 
             <x-lego::media-panel :model="$model" />
