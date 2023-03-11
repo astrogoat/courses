@@ -3,8 +3,6 @@
 namespace Astrogoat\Courses\Http\Controllers;
 
 use Astrogoat\Courses\Models\Course;
-use Helix\Lego\Events\PageViewed;
-use Helix\Lego\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 

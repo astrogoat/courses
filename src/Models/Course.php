@@ -3,7 +3,6 @@
 namespace Astrogoat\Courses\Models;
 
 use Astrogoat\Courses\Database\Factories\CourseFactory;
-use Astrogoat\Courses\RegistrationServices\RegistrationService;
 use Astrogoat\Courses\RegistrationServices\RegistrationServiceManager;
 use Helix\Fabrick\Icon;
 use Helix\Lego\Bricks\ValueObjects\LinkValueObject;

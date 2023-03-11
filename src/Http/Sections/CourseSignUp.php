@@ -21,6 +21,5 @@ abstract class CourseSignUp extends Section
 
     public function register(string $email, string $name)
     {
-
     }
 }
