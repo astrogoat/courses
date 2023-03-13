@@ -3,6 +3,8 @@
 namespace Astrogoat\Courses\Http\Livewire\Models\Courses;
 
 use Astrogoat\Courses\Models\Course;
+use Astrogoat\Courses\RegistrationServices\RegistrationService;
+use Astrogoat\Courses\RegistrationServices\RegistrationServiceManager;
 use Helix\Lego\Http\Livewire\Traits\CanBePublished;
 use Helix\Lego\Models\Contracts\Publishable;
 use Helix\Lego\Models\Footer;
@@ -12,7 +14,7 @@ class Form extends \Helix\Lego\Http\Livewire\Models\Form
 {
     use CanBePublished;
 
-    public string $signUpProvider = 'default';
+    public string $registration_service_provider = 'null';
 
     protected $listeners = [
         'updateRegistrationService',
@@ -23,14 +25,13 @@ class Form extends \Helix\Lego\Http\Livewire\Models\Form
         return [
             'model.title' => ['required'],
             'model.description' => ['nullable'],
-            'model.wait_list_enabled' => ['boolean'],
-            'model.is_open_for_registration' => ['boolean'],
+            'model.wait_list_enabled' => ['boolean', 'nullable'],
+            'model.is_open_for_registration' => ['boolean', 'nullable'],
 //            'model.meta.description' => ['nullable'],
             'model.slug' => [new SlugRule($this->model)],
+            'model.published_at' => ['nullable'],
+            'registration_service_provider' => ['required'],
             'model.registration_service' => ['required'],
-//            'model.registration_service.provider' => ['required'],
-//            'model.registration_service.link' => ['nullable'],
-//            'model.registration_service.price_id' => ['nullable'],
         ];
     }
 
@@ -51,6 +52,8 @@ class Form extends \Helix\Lego\Http\Livewire\Models\Form
         if (! isset($this->model->registration_service['provider'])) {
             $this->model->registration_service = ['provider' => array_key_first($this->registrationServices())];
         }
+
+        $this->registration_service_provider = $this->model->registration_service['provider'];
     }
 
     public function footers()
@@ -68,18 +71,20 @@ class Form extends \Helix\Lego\Http\Livewire\Models\Form
         return $this->model;
     }
 
-    public function participants()
-    {
-        return $this->model->participants()->orderBy('name')->paginate(8);
-    }
-
     public function registrationServices(): array
     {
         return [
-            'custom' => 'Custom',
+            'null' => 'None',
             'stripe-checkout' => 'Stripe Checkout',
             'stripe-payment-link' => 'Stripe Payment Link',
         ];
+    }
+
+    public function updatedRegistrationServiceProvider($value)
+    {
+        $this->model['registration_service'] = ['provider' => $value];
+
+        $this->markAsDirty();
     }
 
     public function updateRegistrationService($payload)
@@ -93,5 +98,19 @@ class Form extends \Helix\Lego\Http\Livewire\Models\Form
         $this->model['registration_service'] = $registrationService;
 
         $this->markAsDirty();
+    }
+
+    public function registrationServiceHasOptionsComponent(): bool
+    {
+        return ! blank($this->getRegistrationServiceOptionsComponent());
+    }
+
+    public function getRegistrationServiceOptionsComponent(): ?string
+    {
+        return app(RegistrationServiceManager::class)
+            ->driver($this->model['registration_service']['provider'] ?? 'null')
+            ->setCourse($this->model)
+            ->setService($this->model['registration_service'] ?? [])
+            ->formOptionsComponent();
     }
 }

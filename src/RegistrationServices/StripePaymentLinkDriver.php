@@ -8,4 +8,9 @@ class StripePaymentLinkDriver extends RegistrationService
     {
         return $this->service['link'];
     }
+
+    public function formOptionsComponent(): ?string
+    {
+        return null;
+    }
 }

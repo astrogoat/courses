@@ -15,6 +15,7 @@ class CourseParticipantsFactory extends Factory
         return [
             'email' => $this->faker->email,
             'name' => $this->faker->name,
+            'pending_at' => null,
         ];
     }
 }

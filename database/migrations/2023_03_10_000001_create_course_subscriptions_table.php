@@ -13,16 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('subscription_items', function (Blueprint $table) {
+        Schema::create('course_subscriptions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('subscription_id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('name');
             $table->string('stripe_id')->unique();
-            $table->string('stripe_product');
-            $table->string('stripe_price');
+            $table->string('stripe_status');
+            $table->string('stripe_price')->nullable();
             $table->integer('quantity')->nullable();
+            $table->timestamp('trial_ends_at')->nullable();
+            $table->timestamp('ends_at')->nullable();
             $table->timestamps();
 
-            $table->unique(['subscription_id', 'stripe_price']);
+            $table->index(['user_id', 'stripe_status']);
         });
     }
 
@@ -33,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subscription_items');
+        Schema::dropIfExists('course_subscriptions');
     }
 };

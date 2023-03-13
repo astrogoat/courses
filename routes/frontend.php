@@ -11,4 +11,6 @@ Route::get('courses/confirmation/{checkoutConfirmationId}', [CoursesController::
 //Route::get('payment/{id}', 'PaymentController@show')->name('payment');
 Route::post('courses/webhooks/stripe', [WebhookController::class, 'handleWebhook']);
 
-Route::get('courses/{course:slug}/stripe/checkout', CourseStripeCheckoutController::class)->name('courses.stripe.checkout');
+Route::get('courses/{course:slug}/stripe/checkout', [CourseStripeCheckoutController::class, 'checkout'])->name('courses.stripe.checkout');
+Route::get('courses/{course:slug}/stripe/checkout/success', [CourseStripeCheckoutController::class, 'success'])->name('courses.stripe.checkout.success');
+Route::get('courses/{course:slug}/stripe/checkout/cancel', [CourseStripeCheckoutController::class, 'cancel'])->name('courses.stripe.checkout.cancel');

@@ -3,6 +3,9 @@
 namespace Astrogoat\Courses\Models;
 
 use Astrogoat\Courses\Database\Factories\CourseFactory;
+use Astrogoat\Courses\Enums\SignUpStatus;
+use Astrogoat\Courses\Exceptions\UnableToSignUp;
+use Astrogoat\Courses\RegistrationServices\RegistrationService;
 use Astrogoat\Courses\RegistrationServices\RegistrationServiceManager;
 use Helix\Fabrick\Icon;
 use Helix\Lego\Bricks\ValueObjects\LinkValueObject;
@@ -39,11 +42,9 @@ class Course extends Model implements Indexable, Publishable, Sectionable, Media
         'wait_list_enabled' => 'boolean',
         'is_open_for_registration' => 'boolean',
         'registration_service' => 'json',
-    ];
-
-    protected $dates = [
-        'started_at',
-        'ended_at',
+        'started_at' => 'datetime',
+        'ended_at' => 'datetime',
+        'published_at' => 'datetime',
     ];
 
     /**
@@ -185,9 +186,37 @@ class Course extends Model implements Indexable, Publishable, Sectionable, Media
             ->setService($this->registration_service ?? []);
     }
 
-    public function signUpLink(): LinkValueObject
+    /**
+     * @throws UnableToSignUp
+     */
+    public function signUp(Participant $participant): SignUpStatus
+    {
+        if (! $this->signupActionIsAvailable()) {
+            throw UnableToSignUp::courseNotAvailableForSignUps($this);
+        }
+
+        if ($this->allowRegistration()) {
+            $service = $this->getRegistrationService();
+
+            return $service->signUp($participant, $this);
+        }
+
+        $participant->pending_at = null;
+        $participant->wait_listed_at = now();
+        $participant->save();
+
+        $this->participants()->save($participant);
+
+        return SignUpStatus::ADDED_TO_WAIT_LIST;
+    }
+
+    public function signUpLink(): ?LinkValueObject
     {
         $service = $this->getRegistrationService();
+
+        if (! $this->signupActionIsAvailable() || blank($service->redirectUrl())) {
+            return null;
+        }
 
         return new LinkValueObject([
             'href' => $service->redirectUrl(),

@@ -4,6 +4,7 @@ namespace Astrogoat\Courses;
 
 use Astrogoat\Courses\Http\Livewire\Models\Courses\Form;
 use Astrogoat\Courses\Http\Livewire\Models\Courses\Index;
+use Astrogoat\Courses\Http\Livewire\Models\Courses\Partials\Participants;
 use Astrogoat\Courses\Models\Course;
 use Astrogoat\Courses\Models\Participant;
 use Astrogoat\Courses\Providers\EventServiceProvider;
@@ -48,7 +49,10 @@ class CoursesServiceProvider extends PackageServiceProvider
                 );
             })
             ->backendRoutes(__DIR__.'/../routes/backend.php')
-            ->frontendRoutes(__DIR__.'/../routes/frontend.php');
+            ->frontendRoutes(__DIR__.'/../routes/frontend.php')
+            ->publishOnInstall([
+                'courses-assets',
+            ]);
     }
 
     public function registeringPackage()
@@ -63,13 +67,25 @@ class CoursesServiceProvider extends PackageServiceProvider
 
     public function bootingPackage()
     {
+        if ($this->app->runningInConsole()) {
+            $this->publishFiles();
+        }
+
         Livewire::component('astrogoat.courses.http.livewire.models.courses.index', Index::class);
         Livewire::component('astrogoat.courses.http.livewire.models.courses.form', Form::class);
+        Livewire::component('astrogoat.courses.http.livewire.models.courses.partials.participants', Participants::class);
         Livewire::component('astrogoat.courses.http.livewire.registrations-services.stripe-checkout.form', \Astrogoat\Courses\Http\Livewire\RegistrationServices\StripeCheckout\Courses\Form::class);
     }
 
     public function configurePackage(Package $package): void
     {
         $package->name('courses')->hasConfigFile()->hasViews();
+    }
+
+    private function publishFiles()
+    {
+        $this->publishes([
+            __DIR__.'/../public' => public_path('vendor/courses/'),
+        ], 'courses-assets');
     }
 }

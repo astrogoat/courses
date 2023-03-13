@@ -3,9 +3,11 @@
 namespace Astrogoat\Courses\Http\Livewire\RegistrationServices\StripeCheckout\Courses;
 
 use Astrogoat\Courses\Models\Course;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Cashier;
 use Livewire\Component;
+use Stripe\Price;
 
 class Form extends Component
 {
@@ -15,7 +17,17 @@ class Form extends Component
     {
         return [
             'course.registration_service.price_id' => ['required'],
+            'course.registration_service.allow_promotion_codes' => ['boolean'],
         ];
+    }
+
+    public function mount()
+    {
+        if (! isset($this->course->registration_service['price_id'])) {
+            $service = $this->course->registration_service;
+            data_set($service, 'price_id', array_key_first($this->getProducts()->toArray()));
+            $this->course->registration_service = $service;
+        }
     }
 
     public function updating($property, $value)
@@ -30,10 +42,14 @@ class Form extends Component
     public function getProducts()
     {
 
-        dd(Cashier::stripe()->products->all(), Cashier::stripe()->prices->search([
-            'query' => 'product:\'prod_NTjeovlPoA6b52\''
-        ]));
-        dd(Cashier::stripe()->products->all());
+        $prices = Cache::remember('stripe-prices', now()->addMinutes(5), fn () => Cashier::stripe()->prices->all()->data);
+        $products = Cache::remember('stripe-products', now()->addMinutes(5), fn () => Cashier::stripe()->products->all()->data);
+
+        return collect($prices)->mapWithKeys(function (Price $price) use ($products) {
+            $product = collect($products)->where('id', $price->product)->sole();
+
+            return [$price->id => $product->name . ' - $' . ($price->unit_amount / 100)];
+        });
     }
 
     public function render()
