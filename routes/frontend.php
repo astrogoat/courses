@@ -5,12 +5,14 @@ use Astrogoat\Courses\Http\Controllers\CoursesController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Http\Controllers\WebhookController;
 
-Route::get('courses/{course:slug}', [CoursesController::class, 'show'])->name('courses.show');
-Route::get('courses/confirmation/{checkoutConfirmationId}', [CoursesController::class, 'update'])->name('courses.update');
+Route::group(['prefix' => 'courses'], function () {
+    Route::get('{course:slug}', [CoursesController::class, 'show'])->name('courses.show');
+    Route::get('confirmation/{checkoutConfirmationId}', [CoursesController::class, 'update'])->name('courses.update');
 
-//Route::get('payment/{id}', 'PaymentController@show')->name('payment');
-Route::post('courses/webhooks/stripe', [WebhookController::class, 'handleWebhook']);
+    //Route::get('payment/{id}', 'PaymentController@show')->name('payment');
+    Route::post('webhooks/stripe', [WebhookController::class, 'handleWebhook']);
 
-Route::get('courses/{course:slug}/stripe/checkout', [CourseStripeCheckoutController::class, 'checkout'])->name('courses.stripe.checkout');
-Route::get('courses/{course:slug}/stripe/checkout/success', [CourseStripeCheckoutController::class, 'success'])->name('courses.stripe.checkout.success');
-Route::get('courses/{course:slug}/stripe/checkout/cancel', [CourseStripeCheckoutController::class, 'cancel'])->name('courses.stripe.checkout.cancel');
+    Route::get('{course:slug}/stripe/checkout', [CourseStripeCheckoutController::class, 'checkout'])->name('courses.stripe.checkout');
+    Route::get('{course:slug}/stripe/checkout/success', [CourseStripeCheckoutController::class, 'success'])->name('courses.stripe.checkout.success');
+    Route::get('{course:slug}/stripe/checkout/cancel', [CourseStripeCheckoutController::class, 'cancel'])->name('courses.stripe.checkout.cancel');
+});
