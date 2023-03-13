@@ -44,6 +44,9 @@ class Form extends \Helix\Lego\Http\Livewire\Models\Form
     {
         $this->setModel($course);
 
+        $this->model->is_open_for_registration = is_null($this->model->is_open_for_registration) ? false : $this->model->is_open_for_registration;
+        $this->model->wait_list_enabled = is_null($this->model->wait_list_enabled) ? false : $this->model->wait_list_enabled;
+
         if (! $this->model->exists) {
             $this->model->indexable = true;
             $this->model->layout = array_key_first(siteLayouts());
