@@ -41,7 +41,6 @@ class Form extends Component
 
     public function getProducts()
     {
-
         $prices = Cache::remember('stripe-prices', now()->addMinutes(5), fn () => Cashier::stripe()->prices->all()->data);
         $products = Cache::remember('stripe-products', now()->addMinutes(5), fn () => Cashier::stripe()->products->all()->data);
 

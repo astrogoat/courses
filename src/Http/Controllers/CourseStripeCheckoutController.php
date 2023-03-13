@@ -3,7 +3,6 @@
 namespace Astrogoat\Courses\Http\Controllers;
 
 use Astrogoat\Courses\Enums\SignUpStatus;
-use Astrogoat\Courses\Models\CashierUser;
 use Astrogoat\Courses\Models\Course;
 use Astrogoat\Courses\Models\Participant;
 use Astrogoat\Courses\Models\Scopes\NotPending;
