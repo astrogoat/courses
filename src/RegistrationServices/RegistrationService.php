@@ -12,7 +12,9 @@ abstract class RegistrationService
     public readonly array $service;
 
     abstract public function formOptionsComponent(): ?string;
+
     abstract public function redirectUrl(): string;
+
     abstract public function signup(Participant $participant, Course $course): SignUpStatus;
 
     public function setCourse(Course $course): static

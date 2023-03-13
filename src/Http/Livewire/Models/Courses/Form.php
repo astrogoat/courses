@@ -3,7 +3,6 @@
 namespace Astrogoat\Courses\Http\Livewire\Models\Courses;
 
 use Astrogoat\Courses\Models\Course;
-use Astrogoat\Courses\RegistrationServices\RegistrationService;
 use Astrogoat\Courses\RegistrationServices\RegistrationServiceManager;
 use Helix\Lego\Http\Livewire\Traits\CanBePublished;
 use Helix\Lego\Models\Contracts\Publishable;
