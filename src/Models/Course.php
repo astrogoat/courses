@@ -45,6 +45,7 @@ class Course extends Model implements Indexable, Publishable, Sectionable, Media
         'started_at' => 'datetime',
         'ended_at' => 'datetime',
         'published_at' => 'datetime',
+        'meta' => 'json',
     ];
 
     /**

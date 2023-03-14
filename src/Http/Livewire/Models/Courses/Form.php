@@ -26,8 +26,9 @@ class Form extends \Helix\Lego\Http\Livewire\Models\Form
             'model.description' => ['nullable'],
             'model.wait_list_enabled' => ['boolean', 'nullable'],
             'model.is_open_for_registration' => ['boolean', 'nullable'],
-//            'model.meta.description' => ['nullable'],
+            'model.meta.description' => ['nullable'],
             'model.slug' => [new SlugRule($this->model)],
+            'model.indexable' => ['boolean'],
             'model.published_at' => ['nullable'],
             'registration_service_provider' => ['required'],
             'model.registration_service' => ['required'],
@@ -43,12 +44,11 @@ class Form extends \Helix\Lego\Http\Livewire\Models\Form
     {
         $this->setModel($course);
 
-        $this->model->is_open_for_registration = is_null($this->model->is_open_for_registration) ? false : $this->model->is_open_for_registration;
-        $this->model->wait_list_enabled = is_null($this->model->wait_list_enabled) ? false : $this->model->wait_list_enabled;
-
         if (! $this->model->exists) {
             $this->model->indexable = true;
             $this->model->layout = array_key_first(siteLayouts());
+            $this->model->is_open_for_registration = is_null($this->model->is_open_for_registration) ? false : $this->model->is_open_for_registration;
+            $this->model->wait_list_enabled = is_null($this->model->wait_list_enabled) ? false : $this->model->wait_list_enabled;
         }
 
         if (! isset($this->model->registration_service['provider'])) {
