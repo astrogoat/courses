@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('slug');
             $table->text('description')->nullable();
             $table->json('meta')->nullable();
+            $table->unsignedInteger('footer_id')->nullable();
             $table->string('layout')->nullable();
             $table->string('location')->nullable();
             $table->integer('price')->nullable();
