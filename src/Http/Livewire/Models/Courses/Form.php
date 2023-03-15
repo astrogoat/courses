@@ -29,6 +29,7 @@ class Form extends \Helix\Lego\Http\Livewire\Models\Form
             'model.meta.description' => ['nullable'],
             'model.slug' => [new SlugRule($this->model)],
             'model.indexable' => ['nullable', 'boolean'],
+            'model.layout' => ['required'],
             'model.footer_id' => ['nullable'],
             'model.published_at' => ['nullable'],
             'registration_service_provider' => ['required'],
