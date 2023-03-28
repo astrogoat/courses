@@ -3,6 +3,7 @@
 namespace Astrogoat\Courses\Http\Livewire\RegistrationServices\StripeCheckout\Courses;
 
 use Astrogoat\Courses\Models\Course;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Cashier;
@@ -39,13 +40,17 @@ class Form extends Component
         );
     }
 
-    public function getProducts()
+    public function getProducts(): Collection
     {
         $prices = Cache::remember('stripe-prices', now()->addMinutes(5), fn () => Cashier::stripe()->prices->all()->data);
         $products = Cache::remember('stripe-products', now()->addMinutes(5), fn () => Cashier::stripe()->products->all()->data);
 
         return collect($prices)->mapWithKeys(function (Price $price) use ($products) {
             $product = collect($products)->where('id', $price->product)->sole();
+
+            if (! $product) {
+                return [];
+            }
 
             return [$price->id => $product->name . ' - $' . ($price->unit_amount / 100)];
         });
