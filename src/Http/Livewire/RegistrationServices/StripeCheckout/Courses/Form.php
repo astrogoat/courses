@@ -46,7 +46,7 @@ class Form extends Component
         $products = Cache::remember('stripe-products', now()->addMinutes(5), fn () => Cashier::stripe()->products->all()->data);
 
         return collect($prices)->mapWithKeys(function (Price $price) use ($products) {
-            $product = collect($products)->where('id', $price->product)->sole();
+            $product = collect($products)->where('id', $price->product)->first();
 
             if (! $product) {
                 return [];
