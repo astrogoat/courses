@@ -58,7 +58,7 @@ class CourseStripeCheckoutController extends Controller
             return redirect(route('courses.show', ['course' => $course, 'signup_status' => SignUpStatus::REGISTERED->value]));
         }
 
-//        dd($request->all(), $course, $session, $participant);
+        //        dd($request->all(), $course, $session, $participant);
 
         return redirect(route('courses.show', ['course' => $course, 'signup_status' => 'failed']));
     }
