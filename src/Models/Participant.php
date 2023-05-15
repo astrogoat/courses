@@ -28,7 +28,7 @@ class Participant extends Model
 
     public static function booted(): void
     {
-//        static::addGlobalScope(new NotPending);
+        //        static::addGlobalScope(new NotPending);
     }
 
     /**
