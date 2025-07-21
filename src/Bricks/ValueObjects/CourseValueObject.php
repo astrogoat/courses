@@ -14,7 +14,7 @@ class CourseValueObject extends BrickValueObject
 
     public function getModel(): ?Course
     {
-        return Course::find($this->value);
+        return Course::find($this->getValue());
     }
 
     public function __get(string $name)
